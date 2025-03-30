@@ -62,6 +62,31 @@ jobs:
           cp whisper-command/* staging/whisper-command/
 
           cp index.html staging/
+
+      - name: Create headers.json file
+        run: |
+          mkdir -p staging/.github/pages
+          cat > staging/.github/pages/headers.json << 'EOF'
+          {
+            "**/*.wasm": {
+              "Content-Type": "application/wasm",
+              "Cross-Origin-Embedder-Policy": "require-corp",
+              "Cross-Origin-Opener-Policy": "same-origin"
+            },
+            "**/*.js": {
+              "Cross-Origin-Embedder-Policy": "require-corp",
+              "Cross-Origin-Opener-Policy": "same-origin"
+            },
+            "**/*.html": {
+              "Cross-Origin-Embedder-Policy": "require-corp",
+              "Cross-Origin-Opener-Policy": "same-origin"
+            },
+            "/*": {
+              "Cross-Origin-Embedder-Policy": "require-corp",
+              "Cross-Origin-Opener-Policy": "same-origin"
+            }
+          }
+          EOF
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
