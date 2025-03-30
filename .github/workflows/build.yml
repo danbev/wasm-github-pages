@@ -57,6 +57,7 @@ jobs:
           cp add-wasm/add.wasm staging/add-wasm/
           # Copy HTML file to application directory
           cp add-wasm/index.html staging/add-wasm/
+          cp index.html staging/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
