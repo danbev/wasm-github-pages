@@ -27,16 +27,19 @@ jobs:
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
+      - name: Create staging directory
+        run: mkdir -p staging
       
       - name: Create .nojekyll file
         run: touch .nojekyll
         
       - name: Create headers file for CORS and WASM MIME types
         run: |
-          mkdir -p .github/pages
-          cat > .github/pages/headers.json << EOF
+          mkdir -p staging/.github/pages
+          cat > staging/.github/pages/headers.json << EOF
           {
-            "/add.wasm": {
+            "**/*.wasm": {
               "Content-Type": "application/wasm",
               "Cross-Origin-Embedder-Policy": "require-corp",
               "Cross-Origin-Opener-Policy": "same-origin"
@@ -47,12 +50,19 @@ jobs:
             }
           }
           EOF
+
+      - name: Create add-app directory structure
+        run: |
+          mkdir -p staging/add-app
+          cp add-wasm/add.wasm staging/add-wasm/
+          # Copy HTML file to application directory
+          cp add-wasm/index.html staging/add-wasm/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: '.'
+          path: ./staging
       
       - name: Deploy to GitHub Pages
         id: deployment
