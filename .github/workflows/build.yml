@@ -55,8 +55,12 @@ jobs:
         run: |
           mkdir -p staging/add-wasm
           cp add-wasm/add.wasm staging/add-wasm/
-          # Copy HTML file to application directory
           cp add-wasm/index.html staging/add-wasm/
+
+          # whisper command
+          mkdir -p staging/whisper-command
+          cp whisper-command/* staging/whisper-command/
+
           cp index.html staging/
       
       - name: Upload artifact
