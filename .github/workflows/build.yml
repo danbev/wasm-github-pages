@@ -53,7 +53,7 @@ jobs:
 
       - name: Create add-app directory structure
         run: |
-          mkdir -p staging/add-app
+          mkdir -p staging/add-wasm
           cp add-wasm/add.wasm staging/add-wasm/
           # Copy HTML file to application directory
           cp add-wasm/index.html staging/add-wasm/
