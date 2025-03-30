@@ -46,8 +46,8 @@ jobs:
 
           # Copy root index.html
           cp -v index.html staging/
-          cp -v coi-serviceworker.js staging/
-          cp -v coi-serviceworker.js staging/whisper-command/
+          #cp -v coi-serviceworker.js staging/
+          #cp -v coi-serviceworker.js staging/whisper-command/
 
       - name: Create headers.json file
         run: |
