@@ -1,20 +1,16 @@
 name: Deploy to GitHub Pages
-
 on:
   push:
     branches: ["main"]
   
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: "pages"
   cancel-in-progress: false
-
 jobs:
   deploy:
     environment:
@@ -31,37 +27,43 @@ jobs:
       - name: Create staging directory
         run: mkdir -p staging
       
-      - name: Create .nojekyll file
-        run: touch .nojekyll
+      - name: Create .nojekyll file in staging directory
+        run: touch staging/.nojekyll
         
-      - name: Create headers file for CORS and WASM MIME types
+      - name: Create _headers file (Netlify-style format as backup)
         run: |
-          mkdir -p staging/.github/pages
-          cat > staging/.github/pages/headers.json << EOF
-          {
-            "**/*.wasm": {
-              "Content-Type": "application/wasm",
-              "Cross-Origin-Embedder-Policy": "require-corp",
-              "Cross-Origin-Opener-Policy": "same-origin"
-            },
-            "/*": {
-              "Cross-Origin-Embedder-Policy": "require-corp",
-              "Cross-Origin-Opener-Policy": "same-origin"
-            }
-          }
+          cat > staging/_headers << 'EOF'
+          /*
+            Cross-Origin-Embedder-Policy: require-corp
+            Cross-Origin-Opener-Policy: same-origin
+
+          *.wasm
+            Content-Type: application/wasm
+            Cross-Origin-Embedder-Policy: require-corp
+            Cross-Origin-Opener-Policy: same-origin
+
+          *.js
+            Cross-Origin-Embedder-Policy: require-corp
+            Cross-Origin-Opener-Policy: same-origin
+
+          *.html
+            Cross-Origin-Embedder-Policy: require-corp
+            Cross-Origin-Opener-Policy: same-origin
           EOF
 
-      - name: Create add-app directory structure
+      - name: Copy application files
         run: |
+          # Copy add-wasm application
           mkdir -p staging/add-wasm
-          cp add-wasm/add.wasm staging/add-wasm/
-          cp add-wasm/index.html staging/add-wasm/
+          cp -v add-wasm/add.wasm staging/add-wasm/
+          cp -v add-wasm/index.html staging/add-wasm/
 
-          # whisper command
+          # Copy whisper-command - use recursive to make sure all files are copied
           mkdir -p staging/whisper-command
-          cp whisper-command/* staging/whisper-command/
+          cp -rv whisper-command/* staging/whisper-command/
 
-          cp index.html staging/
+          # Copy root index.html
+          cp -v index.html staging/
 
       - name: Create headers.json file
         run: |
@@ -87,13 +89,17 @@ jobs:
             }
           }
           EOF
-      
+
+      - name: List files in staging directory (for debugging)
+        run: |
+          echo "Files in staging directory:"
+          find staging -type f | sort
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: ./staging
-      
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
