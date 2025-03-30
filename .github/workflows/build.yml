@@ -30,27 +30,6 @@ jobs:
       - name: Create .nojekyll file in staging directory
         run: touch staging/.nojekyll
         
-      - name: Create _headers file (Netlify-style format as backup)
-        run: |
-          cat > staging/_headers << 'EOF'
-          /*
-            Cross-Origin-Embedder-Policy: require-corp
-            Cross-Origin-Opener-Policy: same-origin
-
-          *.wasm
-            Content-Type: application/wasm
-            Cross-Origin-Embedder-Policy: require-corp
-            Cross-Origin-Opener-Policy: same-origin
-
-          *.js
-            Cross-Origin-Embedder-Policy: require-corp
-            Cross-Origin-Opener-Policy: same-origin
-
-          *.html
-            Cross-Origin-Embedder-Policy: require-corp
-            Cross-Origin-Opener-Policy: same-origin
-          EOF
-
       - name: Copy application files
         run: |
           # Copy add-wasm application
@@ -60,11 +39,15 @@ jobs:
 
           # Copy whisper-command - use recursive to make sure all files are copied
           mkdir -p staging/whisper-command
-          cp -rv whisper-command/* staging/whisper-command/
+          cp whisper-command/index.html staging/whisper-command/
+          cp whisper-command/command.js staging/whisper-command/
+          cp whisper-command/helpers.js staging/whisper-command/
 
           # Copy root index.html
           cp -v index.html staging/
           cp -v coi-serviceworker.js staging/
+
+          cp whisper-command/libcommand.js staging
 
       - name: Create headers.json file
         run: |
