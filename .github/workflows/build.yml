@@ -48,7 +48,7 @@ jobs:
           cp -v coi-serviceworker.js staging/
 
           cp whisper-command/libcommand.js staging
-          cp whisper-command/libcommand-worker.js staging
+          cp whisper-command/libcommand.worker.js staging
 
       - name: Create headers.json file
         run: |
