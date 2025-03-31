@@ -75,9 +75,6 @@ jobs:
           # Copy Cross-Origin Isolation service worker
           cp -v coi-serviceworker.js staging/
 
-          # Suppress favicon.ico error
-          touch staging/favicon.ico
-
       - name: List files in staging directory (for debugging)
         run: |
           echo "Files in staging directory:"
