@@ -53,7 +53,7 @@ jobs:
           target_dir=staging/command.wasm
           mkdir -p ${target_dir}
           cp ${build_dir}/command.wasm/{index.html,command.js,helpers.js} ${target_dir}
-          cp ${build_dir/libcommand.worker.js ${target_dir}
+          cp ${build_dir}/libcommand.worker.js ${target_dir}
           
           # bench.wasm
           target_dir=staging/bench.wasm
