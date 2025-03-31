@@ -65,7 +65,7 @@ jobs:
           target_dir=staging/stream.wasm
           mkdir -p ${target_dir}
           cp ${build_dir}/stream.wasm/{index.html,stream.js,helpers.js} ${target_dir}
-          cp ${bulid_dir}/libstream.worker.js ${target_dir}
+          cp ${build_dir}/libstream.worker.js ${target_dir}
 
           # whisper.wasm
           target_dir=staging/whisper.wasm
