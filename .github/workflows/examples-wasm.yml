@@ -27,8 +27,8 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      
       - name: Setup emsdk
+        if: false
         uses: mymindstorm/setup-emsdk@v14
 
       - name: Build WASM Examples
@@ -48,25 +48,25 @@ jobs:
       - name: Copy application files
         run: |
           # command.wasm
-          target_dir=/staging/command.wasm
+          target_dir=staging/command.wasm
           mkdir -p ${target_dir}
           cp bin/command.wasm/{index.html,command.js,helpers.js} ${target_dir}
           cp bin/libcommand.worker.js ${target_dir}
           
           # bench.wasm
-          target_dir=/staging/bench.wasm
+          target_dir=staging/bench.wasm
           mkdir -p ${target_dir}
           cp bin/bench.wasm/{index.html,bench.js,helpers.js} ${target_dir}
           cp bin/libbench.worker.js ${target_dir}
           
           # stream.wasm
-          target_dir=/staging/stream.wasm
+          target_dir=staging/stream.wasm
           mkdir -p ${target_dir}
           cp bin/stream.wasm/{index.html,stream.js,helpers.js} ${target_dir}
           cp bin/libstream.worker.js ${target_dir}
 
           # whisper.wasm
-          target_dir=/staging/whisper.wasm
+          target_dir=staging/whisper.wasm
           mkdir -p ${target_dir}
           cp bin/whisper.wasm/{index.html,main.js,helpers.js} ${target_dir}
           cp bin/libmain.worker.js ${target_dir}
